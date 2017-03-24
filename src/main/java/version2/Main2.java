@@ -28,11 +28,7 @@ public class Main2 {
 
     public static void main(String[] args) throws Exception {
 
-
-        if (args.length == 0) {
-            throw new Exception("Please enter threads amount in program arguments");
-        }
-        int threadsAmount = Integer.parseInt(args[0]);
+        int threadsAmount = checkArgument(args);
         createOrCleanFilePath();
         Document doc = Jsoup.connect(MAIN_URL).get();
         Elements links = doc.select("a[href]");
@@ -55,6 +51,18 @@ public class Main2 {
         long endTime = System.currentTimeMillis();
         System.out.println("Operation time: " + (endTime - startTime) / 1000F + " seconds");
         System.out.println("Test files will be stored in directory: " + myPath);
+    }
+
+    private static int checkArgument(String[] args) throws Exception {
+        if (args.length == 0) {
+            throw new Exception("Please enter threads amount in program arguments");
+        }
+        String arg = args[0];
+        try {
+            return Integer.parseInt(arg);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("argument should be numeric.");
+        }
     }
 
     /**
